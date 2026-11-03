@@ -175,3 +175,6 @@ section.block>h2{font-size:21px;margin-bottom:4px}
 .toast.on{opacity:1}
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+button.cx{background:transparent;color:inherit;text-align:left;cursor:pointer}
+button.cx.got{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+button.cx:hover{border-color:var(--accent)}
