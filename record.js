@@ -87,13 +87,33 @@ $("#decor").addEventListener("click",e=>{
   const s=e.target.closest("[data-save]");
   if(s){ if(s.dataset.save==="1080"&&!W.plus){openPlus("고화질 저장은 PLUS 혜택이에요.");return;} toast(`${s.dataset.save}p 9:16 릴스 저장 (시연용 · 실제 파일 저장은 브라우저 녹화로 구현 예정)`); }
 });
+const TYPE_HINT={
+  A:"마음 온도 40 이상, 긴장 50 미만으로 대화를 끝내면 열려요. 다정하게, 편안하게 다가가 보세요.",
+  B:"마음 온도 40 이상, 긴장 50 이상으로 끝내면 열려요. 티격태격하면서도 마음을 열게 해 보세요.",
+  C:"마음 온도 40 미만, 긴장 50 이상으로 끝내면 열려요. 계속 부딪히면 이 결말로 가요.",
+  D:"마음 온도 40 미만, 긴장 50 미만으로 끝내면 열려요. 거리를 두면 이 결말로 가요.",
+  H:"마음 온도 75 이상 + 결정적 순간 3번 이상으로 대화를 끝내면 열려요."
+};
 function drawCodex(c,q){
-  W.codex[c.id]=W.codex[c.id]||[]; if(!W.codex[c.id].includes(q)) W.codex[c.id].push(q); save();
+  W.codex[c.id]=W.codex[c.id]||[]; if(!W.codex[c.id].includes(q)) W.codex[c.id].push(q);
+  W.hints=W.hints||[]; save();
   const got=W.codex[c.id];
-  $("#codex").innerHTML=["A","B","C","D","H"].map(k=>{const has=got.includes(k),hid=k==="H";
-    if(has) return `<div class="cx got"><span class="tag acc">${hid?"히든":"도달"}</span><b>${esc(c.types[k][0])}</b></div>`;
-    return `<div class="cx lock"><span class="tag">${hid?"히든":"미도달"}</span><b>${hid?"???":esc(c.types[k][0])}</b><span class="note">${hid?"조건 비공개":"다른 대화로 열기"}</span></div>`;}).join("");
+  $("#codex").innerHTML=["A","B","C","D","H"].map(k=>{
+    const has=got.includes(k), hid=k==="H", hintOpen=W.hints.includes(c.id+k);
+    if(has) return `<button class="cx got" data-cx="${k}"><span class="tag acc">${hid?"히든":"도달"}</span><b>${esc(c.types[k][0])}</b><span class="note">눌러서 설명 보기</span></button>`;
+    if(hid) return `<button class="cx lock" data-cx="H"><span class="tag">히든</span><b>???</b><span class="note">${hintOpen?"힌트 열림":"스텝 5로 힌트 보기"}</span></button>`;
+    return `<button class="cx lock" data-cx="${k}"><span class="tag">미도달</span><b>${esc(c.types[k][0])}</b><span class="note">눌러서 조건 보기</span></button>`;
+  }).join("");
   $("#codexTitle").textContent=`유형 도감 ${got.filter(k=>k!=="H").length}/4 · 히든 ${got.includes("H")?"발견":"?"}`;
+  $("#codex").querySelectorAll("[data-cx]").forEach(b=>b.addEventListener("click",()=>{
+    const k=b.dataset.cx;
+    if(got.includes(k)){ toast(`${c.types[k][0]} · ${c.types[k][1]}`); return; }
+    if(k==="H"&&!W.hints.includes(c.id+"H")){
+      if(!spend({step:5,jump:3},"히든 유형 힌트")) return;
+      W.hints.push(c.id+"H"); save(); drawCodex(c,q);
+    }
+    toast(TYPE_HINT[k]);
+  }));
 }
 function drawPack(c){
   const p=PACKS[c.id],has=W.packs.includes(c.id);
