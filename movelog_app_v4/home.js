@@ -127,7 +127,6 @@ function renderList(){
   $("#resumeChat").addEventListener("click",()=>{show("chat");stage.setCharacter(c);stage.setScene(st);scrollLog();});
 }
 document.addEventListener("click",e=>{const b=e.target.closest("[data-tab-go]");if(b){show(b.dataset.tabGo);renderHome();}});
-$("#demoRecBtn").addEventListener("click",e=>loadSample(e));
 
 /* ───────── 마이페이지 ───────── */
 function renderMy(){
