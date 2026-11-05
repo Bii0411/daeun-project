@@ -283,6 +283,7 @@ const stage=(function(){
 
   function loop(){
     requestAnimationFrame(loop); if(!parentEl) return;
+    if(!parentEl.offsetParent&&getComputedStyle(parentEl).position!=="fixed"){ clock.getDelta(); return; }   /* 화면에 안 보이면 그리지 않음 (배터리 절약) */
     const dt=Math.min(0.05,clock.getDelta()), t=clock.getElapsedTime();
     if(cur){
       const mt=t-mot.start;

@@ -13,14 +13,14 @@ const MARKET=[
 ];
 function renderCommunity(){
   $("#feed").innerHTML=FEED.map((p,i)=>{const c=charObj(p.c),s=STORIES.find(x=>x.id===p.s);
-    return `<div class="post"><div class="vis" style="background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.7)),${s.sw}"><span class="wm">Motion by XSTAGE · ${esc(MOTIONS[p.m].label)}</span><div style="font-size:12px;opacity:.85;margin-bottom:6px">${esc(c.name)} · ${esc(p.title)}</div><div class="q">“${esc(p.q)}”</div></div>
+    return `<div class="post"><div class="vis" style="background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,.85)),url('${c.card}') center 15% / cover"><span class="wm">Motion by XSTAGE · ${esc(MOTIONS[p.m].label)}</span><div style="font-size:12px;opacity:.85;margin-bottom:6px">${esc(c.name)} · ${esc(p.title)}</div><div class="q">“${esc(p.q)}”</div></div>
     <div class="meta"><div class="row" style="justify-content:space-between"><span class="tag acc">${esc(p.type)}</span><span class="note">@${esc(p.user)} · 좋아요 ${p.likes} · 예시</span></div>
-    <div class="row"><button class="btn sm" data-feedplay="${i}">장면 보기</button><button class="btn sm pri" data-feedgo="${i}">이 장면에서 이어서 대화하기</button></div></div></div>`;}).join("");
+    <div class="row"><button class="btn sm" data-feedplay="${i}">장면 보기</button><button class="btn sm pri" data-feedgo="${i}">이어서 대화하기</button></div></div></div>`;}).join("");
   $("#packs").innerHTML=MARKET.map(m=>`<div class="card"><div class="swatch" style="background:linear-gradient(135deg,${m.c},#222)"><b>캐릭터 팩</b><span class="lock">${esc(m.price)}</span></div><h3>${esc(m.n)}</h3><p>${esc(m.desc)}</p><span class="note">창작자 @${esc(m.by)} · 예시</span></div>`).join("");
   $("#goods").innerHTML=[["아크릴 스탠드","결정적 순간 장면 그대로, 내 유형 카드와 함께"],["포토카드 세트","주요 장면 릴스 5컷을 카드로"],["캐릭터 키링","인기 캐릭터 · 창작자와 수익 분배"]].map(g=>`<div class="card"><h3>${g[0]}</h3><p>${g[1]}</p><span class="tag" style="align-self:flex-start">주문 제작 예정</span></div>`).join("");
 }
 document.addEventListener("click",e=>{
-  const fp=e.target.closest("[data-feedplay]"); if(fp){const p=FEED[+fp.dataset.feedplay];stage.setCharacter(charObj(p.c));stage.setScene(STORIES.find(x=>x.id===p.s));stage.play(p.m,{sub:p.q,key:p.title,target:"Com",cam:true});window.scrollTo({top:0,behavior:"smooth"});return;}
+  const fp=e.target.closest("[data-feedplay]"); if(fp){const p=FEED[+fp.dataset.feedplay];stage.setCharacter(charObj(p.c));stage.setScene(STORIES.find(x=>x.id===p.s));stage.play(p.m,{sub:p.q,key:p.title,target:"Com",cam:true});$("#v-community .scroll").scrollTo({top:0,behavior:"smooth"});return;}
   const fg=e.target.closest("[data-feedgo]"); if(fg){const p=FEED[+fg.dataset.feedgo];S.char=p.c;S.story=p.s;startChat();addNarr(`공유된 장면 "${p.title}"에서 이어서 시작해요.`);return;}
 });
 $("#chalPreview").addEventListener("click",()=>{stage.setCharacter(charObj("haram"));stage.setScene(STORIES[2]);stage.play("heart",{sub:"이 기분 그대로 하트 챌린지 간다!",key:"하트 챌린지",target:"Com",cam:true});});

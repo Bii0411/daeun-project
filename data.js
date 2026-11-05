@@ -37,6 +37,23 @@ const CHARS=[
   open:{office:"그거 내가 할게. 너 오늘 세 시간째 그 화면이야.",zombie:"뛰는 폼 보니까 오래 못 버티겠더라. 들어와.",campus:"오, 잡았다. 무대 올라가기 전에 다치면 안 되지.",palace:"너도 저 안이 답답해서 나왔구나. 여기 앉아."},
   types:{A:["든든한 내 편형","무슨 일이 있어도 당신 편에 서요."],B:["티격태격 라이벌형","매일 싸우지만 서로 없으면 심심해요."],C:["날 선 경쟁자형","인정하지만, 지고 싶지는 않은 사이예요."],D:["쿨한 동료형","필요할 때 손을 내미는, 딱 좋은 거리예요."],H:["등을 맡기는형","서로의 등을 믿고 맡기는 사이가 됐어요."]}}
 ];
+
+/* 홈 카드에 보이는 정보. card = 카드 그림 파일 (같은 이름으로 그림만 바꿔 올리면 교체돼요) */
+const CARD_META={
+ doyun:{card:"card_doyun.jpg",chats:"72.8만",hook:"비켜. 네가 하면 또 망가지잖아.",desc:"차갑게 밀어내면서, 위험한 순간엔 제일 먼저 당신 앞을 막아서는 남자.",tags:["나쁜놈","냉미남","혐관","츤데레"]},
+ jihu:{card:"card_jihu.jpg",chats:"41.2만",hook:"울었어? …누가 그랬는데.",desc:"20년 지기 소꿉친구. 다정한 얼굴이 당신 일에만 굳어진다.",tags:["소꿉친구","다정남","순애","힐링"]},
+ ijun:{card:"card_ijun.jpg",chats:"18.9만",hook:"방금 그거… 고백이에요? 확률적으로?",desc:"IQ 168, 생활력 0. 당신 앞에서만 계산이 자꾸 틀리는 허당 천재.",tags:["허당","천재","티키타카","코믹"]},
+ haram:{card:"card_haram.jpg",chats:"25.6만",hook:"데뷔하면, 제일 먼저 너한테 보여줄게.",desc:"데뷔 D-30 연습생. 웃게 해 주면 춤으로 답한다.",tags:["연습생","성장","응원","하트챌린지"]},
+ seoa:{card:"card_seoa.jpg",chats:"33.1만",hook:"붙어 볼래? 지는 사람이 밥 사.",desc:"말보다 행동이 먼저인 직진 선배. 칭찬하면 괜히 퉁명스러워진다.",tags:["걸크러시","선배","라이벌","우정"]}
+};
+CHARS.forEach(c=>Object.assign(c,CARD_META[c.id]));
+/* 홈 맨 위 배너 */
+const BANNERS=[
+ {img:"card_haram.jpg",eyebrow:"이번 주 모션 챌린지",title:"류하람의 하트 챌린지",sub:"세 번 웃게 하면 XSTAGE 댄스가 터진다",go:"challenge",c1:"#3a1030",c2:"#ff5fc8"},
+ {img:"card_doyun.jpg",eyebrow:"Motion by XSTAGE",title:"결정적 순간, 캐릭터가 움직인다",sub:"글로만 읽던 그 장면을 3D로",go:"sample",c1:"#2a0a12",c2:"#ff3355"},
+ {img:"card_seoa.jpg",eyebrow:"무브로그 PLUS",title:"광고 없이, 더 오래 기억하는 대화",sub:"월 13,000원 · 매월 점프 30",go:"plus",c1:"#1c0b33",c2:"#a040ff"},
+ {img:"card_ijun.jpg",eyebrow:"크리에이터 모집",title:"나만의 캐릭터 팩 만들기",sub:"캐릭터 + XSTAGE 모션 세트를 팔아 보세요",go:"market",c1:"#08202f",c2:"#55c8ff"}
+];
 const RARITY={A:18,B:27,C:9,D:41,H:5};
 const MOTIONS={
  idle:{label:"대기 호흡",cat:"이동 및 대기"},cross:{label:"팔짱 끼기",cat:"감정표현"},look_away:{label:"시선 피하기",cat:"감정표현"},

@@ -13,7 +13,7 @@ $("#shareBtn").addEventListener("click",()=>{
   const c=charObj(),st=storyObj(),q=typeKey(S.w,S.t,keyCount()),h=S.hist.find(x=>x.key)||S.hist[S.hist.length-1];
   const link=`movelog.app/s/${Math.random().toString(36).slice(2,8)}`;
   modal(`<h2>릴스로 공유</h2>
-   <div class="sharecard" style="background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.7)),${st.sw||c.color}">
+   <div class="sharecard" style="background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.8)),url('${c.card}') center 15% / cover">
      <div class="row" style="justify-content:space-between"><span class="tag" style="background:rgba(255,255,255,.18);color:#fff">${esc(c.types[q][0])}</span><span style="font-size:10.5px;opacity:.85">무브로그</span></div>
      <div><div style="font-size:12px;opacity:.85;margin-bottom:6px">결정적 순간 · ${esc(h.keyTitle||"첫 만남")}</div><div class="q">“${esc(h.text)}”</div>
      <div style="font-size:11px;opacity:.8;margin-top:10px">Motion by XSTAGE · ${esc(MOTIONS[h.motion].label)}</div>

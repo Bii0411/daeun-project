@@ -24,8 +24,8 @@ function openRecord(isSample){
   $("#sampleFlag").hidden=!S.isSample;
   const keys=keyCount(),q=typeKey(S.w,S.t,keys),ty=c.types[q];
   $("#recEyebrow").textContent=`${st.genre} · ${st.title}`;
-  $("#recTitle").textContent=`나의 [${c.arch}] ${c.name} 변화 기록`;
-  const rf=$("#recFace"); rf.style.background=c.color; rf.textContent=c.name.slice(-2,-1);
+  $("#recTitle").textContent=`${c.name} 변화 기록`;
+  const rf=$("#recFace"); rf.style.backgroundImage=`url('${c.card}')`;
   $("#typeName").textContent=ty[0];
   $("#typeRank").textContent=`상위 ${RARITY[q]}% 도달 유형 (예시 수치) · 대화 ${S.turn}번 · 결정적 순간 ${keys}번`;
   $("#typeDesc").textContent=ty[1];
@@ -68,7 +68,7 @@ function reelPicks(){
 }
 function drawReels(c){
   const st=storyObj();
-  $("#reels").innerHTML=reelPicks().map((h,i)=>`<button class="reel" data-r="${S.hist.indexOf(h)}" style="background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.66)),${st.sw||c.color}"><span class="n">#${i+1} · ${h.turn}번째</span><span class="wm">재생</span><span class="t">${esc(h.key?(h.keyTitle||"결정적 순간"):(h.turn===0?"첫 만남":MOTIONS[h.motion].label))}</span><span class="q">“${esc(h.text)}”</span></button>`).join("");
+  $("#reels").innerHTML=reelPicks().map((h,i)=>`<button class="reel" data-r="${S.hist.indexOf(h)}" style="background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.8)),url('${c.card}') center 15% / cover"><span class="n">#${i+1} · ${h.turn}번째</span><span class="wm">재생</span><span class="t">${esc(h.key?(h.keyTitle||"결정적 순간"):(h.turn===0?"첫 만남":MOTIONS[h.motion].label))}</span><span class="q">“${esc(h.text)}”</span></button>`).join("");
   $("#reels").querySelectorAll(".reel").forEach(b=>b.addEventListener("click",()=>replay(S.hist[+b.dataset.r])));
 }
 const DECOR={cam:[["front","정면",0],["close","클로즈업",5],["orbit","회전",5]],bg:[["base","기본",0],["sunset","노을",5],["neon","네온",5]],bgm:[["none","없음",0],["calm","잔잔",3],["tense","긴장",3]]};
