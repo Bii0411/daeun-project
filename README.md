@@ -1,5 +1,10 @@
 # 무브로그 프론트엔드 (프로토타입)
 
+## 배포 (GitHub)
+- **저장소:** [github.com/Bii0411/daeun-project](https://github.com/Bii0411/daeun-project)
+- **공개 사이트:** [bii0411.github.io/daeun-project](https://bii0411.github.io/daeun-project/) (`main` 푸시 시 Actions가 `movelog_app_v4`를 Pages에 올림)
+- 푸시: `git push daeun main`
+
 ## 실행
 - 가장 쉬운 방법: `index.html`을 더블클릭 → 크롬에서 열림
 - 추천: VS Code에서 폴더 열기 → 확장 프로그램 "Live Server" 설치 → index.html 오른쪽 클릭 → "Open with Live Server"
