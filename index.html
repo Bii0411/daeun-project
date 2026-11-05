@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#6b21a8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="무브로그">
+<title>무브로그 · Night</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">무브로그</div>
+    <div class="wallet">
+      <button class="coin" id="wStep" title="무료 재화 스텝"><i style="background:var(--step)"></i>스텝 <b id="stepN">0</b> <small id="stepExp"></small></button>
+      <button class="coin" id="wJump" title="유료 재화 점프"><i style="background:var(--jump)"></i>점프 <b id="jumpN">0</b></button>
+      <button class="plus-badge" id="wPlus">PLUS</button>
+    </div>
+    <div class="top-actions">
+      <button type="button" class="icon-btn" id="searchBtn" aria-label="검색"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
+      <button type="button" class="btn-login" id="loginBtn">로그인</button>
+    </div>
+  </header>
+
+  <main id="v-home">
+    <div class="hero">
+      <div class="copy">
+        <div class="eyebrow">MoveLog · Night</div>
+        <h1>글로만 읽던 그 장면을, <em>3D로 봅니다</em></h1>
+        <p class="lead">대화는 평소처럼 글로 이어가요. 관계가 바뀌는 결정적 순간에만 캐릭터가 댄스트럭트 모션으로 움직이고, 그 장면은 변화 기록에 남아요.</p>
+        <div class="row">
+          <button class="btn pri" id="startBtn">대화 시작</button>
+          <button class="btn" id="demoRecBtn">예시 변화 기록 보기</button>
+        </div>
+        <span class="note" id="pickNote"></span>
+      </div>
+      <div class="stage" id="stageHero" style="height:clamp(280px,44vh,420px)">
+        <div class="hud"><span class="chip" id="hudHero">캐릭터를 고르면 대표 모션을 보여줘요</span></div>
+        <div class="sub" id="subHero"></div><div class="keytitle" id="keyHero"></div>
+      </div>
+    </div>
+
+    <section class="block">
+      <h2>캐릭터</h2>
+      <p class="lead" style="margin-bottom:10px">강한 맛은 한 명뿐이에요. 나머지는 위로, 웃음, 응원, 우정처럼 다른 관계를 원하는 사람을 위한 캐릭터예요.</p>
+      <div class="grid" id="charGrid"></div>
+    </section>
+
+    <section class="block">
+      <h2>이야기</h2>
+      <p class="lead" style="margin-bottom:10px">첫 장면만 준비돼 있고, 그다음은 대화로 이어져요. 어떤 캐릭터든 어떤 이야기에 넣을 수 있어요.</p>
+      <div class="grid" id="storyGrid"></div>
+      <div class="custom" id="customBox" hidden>
+        <label class="note" for="cTitle">이야기 제목</label>
+        <input id="cTitle" placeholder="예: 폭설로 고립된 산장" maxlength="40">
+        <label class="note" for="cSet">배경과 첫 장면</label>
+        <textarea id="cSet" maxlength="400" placeholder="예: 폭설로 길이 끊긴 산장. 정전된 거실에 벽난로만 타고 있고, 처음 보는 사람이 담요를 건넨다."></textarea>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>특별 에피소드</h2>
+      <p class="lead" style="margin-bottom:10px">기본 이야기와 결정적 순간 모션은 모두 무료예요. 특별 에피소드는 재화로 열 수 있어요.</p>
+      <div class="grid" id="specialGrid"></div>
+    </section>
+
+    <div class="adbanner" data-ad="banner"><span>광고 배너 영역 · 이야기 목록과 유형 도감에만 노출</span><button class="btn sm ghost" data-open="plus">PLUS면 광고 없음</button></div>
+  </main>
+
+  <main id="v-chat" hidden>
+    <div class="play">
+      <div class="chatcol">
+        <div class="row" style="justify-content:space-between">
+          <div><div class="eyebrow" id="chatEyebrow"></div><h2 style="font-size:22px" id="chatTitle"></h2></div>
+          <span class="note">대화 중에는 광고가 나오지 않아요</span>
+        </div>
+        <div class="log" id="log" aria-live="polite"></div>
+        <div class="quick" id="quick"></div>
+        <div class="compose">
+          <textarea id="input" placeholder="말을 걸어 보세요" aria-label="메시지"></textarea>
+          <button class="btn pri" id="sendBtn">보내기</button>
+        </div>
+        <div class="toolbar">
+          <button class="btn" id="toRecord" disabled>대화 끝내고 변화 기록 보기</button>
+          <label class="switch"><input type="checkbox" id="fx3d" checked> 결정적 순간 3D 연출</label>
+          <label class="switch"><input type="checkbox" id="scripted"> 시연 시나리오(고정 응답)</label>
+          <span class="note" id="aiNote"></span>
+        </div>
+      </div>
+      <div class="side">
+        <div class="stage mini" id="stageMini">
+          <div class="hud"><span class="chip" id="hudMini">평소에는 대기 모션만 재생</span></div>
+          <div class="viewctl"><button data-view="0">앞</button><button data-view="-1.5708">옆</button><button data-view="3.1416">뒤</button></div>
+        </div>
+        <div class="meters">
+          <div class="meter"><span>마음 온도</span><div class="bar"><span class="mid"></span><i id="wBar"></i></div><span class="num" id="wNum">0</span></div>
+          <div class="meter"><span>긴장</span><div class="bar"><i id="tBar"></i></div><span class="num" id="tNum">0</span></div>
+          <div class="lean" id="lean"></div>
+          <div class="note" id="keyCount"></div>
+        </div>
+        <div class="panel" style="padding:12px 14px">
+          <div class="note" style="margin-bottom:6px">이 대화에서 쓸 수 있는 모션 (XSTAGE 태그)</div>
+          <div class="row" id="motionList" style="gap:6px"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <main id="v-record" hidden>
+    <div class="row" style="justify-content:space-between;margin-bottom:12px">
+      <div><div class="eyebrow" id="recEyebrow"></div><h1 style="font-size:28px" id="recTitle"></h1></div>
+      <div class="row"><span class="flag" id="sampleFlag" hidden>예시 데이터로 만든 기록이에요</span><button class="btn pri" id="shareBtn">릴스로 공유</button><button class="btn" id="recHome">새 이야기</button></div>
+    </div>
+    <div class="rec">
+      <div class="col">
+        <div class="stage" id="stageRec" style="height:clamp(300px,52vh,520px)">
+          <div class="hud"><span class="chip" id="hudRec">장면을 누르면 다시 재생돼요</span></div>
+          <div class="sub" id="subRec"></div><div class="keytitle" id="keyRec"></div>
+          <div class="textonly" id="recText" hidden></div>
+        </div>
+        <div class="panel">
+          <div class="row" style="justify-content:space-between"><h3 style="margin:0">주요 장면 릴스</h3><span class="note" id="replayLeft"></span></div>
+          <div class="reels" id="reels" style="margin-top:8px"></div>
+          <div class="row" style="margin-top:6px"><label class="switch"><input type="checkbox" id="cmpText"> 텍스트로만 보기 (3D와 비교)</label></div>
+        </div>
+        <div class="panel">
+          <h3>릴스 꾸미기</h3>
+          <div class="opts" id="decor"></div>
+          <p class="note" style="margin:8px 0 0">기본 설정은 무료 · 꾸미기 옵션은 점프 또는 PLUS · 고화질 저장은 PLUS</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="panel">
+          <div class="typehead"><div class="face" id="recFace"></div><div><div class="tname" id="typeName"></div><div class="rank" id="typeRank"></div></div></div>
+          <p class="note" id="typeDesc" style="margin:8px 0 0"></p>
+        </div>
+        <div class="panel">
+          <h3>성향 변화 그래프</h3>
+          <div class="graph" id="graph"></div>
+          <div class="legend"><span><i style="background:var(--accent)"></i>마음 온도</span><span><i style="background:var(--cool)"></i>긴장</span><span>● 결정적 순간 (누르면 재생)</span></div>
+        </div>
+        <div class="panel"><h3>캐릭터의 한마디</h3><p class="quote" id="ending">…</p></div>
+        <div class="panel"><h3>다른 캐릭터들의 반응</h3><div class="reacts" id="reacts"></div></div>
+        <div class="panel"><h3 id="codexTitle">유형 도감</h3><div class="codex" id="codex"></div>
+          <div class="mrow" style="margin-top:12px" id="packRow"></div>
+        </div>
+        <div class="adbanner" data-ad="banner" style="margin-top:0"><span>광고 배너 영역 · 유형 도감 하단</span><button class="btn sm ghost" data-open="plus">PLUS면 광고 없음</button></div>
+      </div>
+    </div>
+  </main>
+
+  <main id="v-community" hidden>
+    <div class="eyebrow">모션이 유입을 만드는 곳</div>
+    <h1 style="font-size:28px;margin-top:4px">커뮤니티</h1>
+    <p class="lead">공유된 릴스 하나하나가 "이 장면에서 이어서 대화하기" 링크가 돼요. 아래 게시물과 팩은 모두 예시 데이터예요.</p>
+    <section class="block">
+      <div class="chal">
+        <div class="panel" style="display:flex;flex-direction:column;gap:10px;justify-content:center">
+          <span class="tag gold" style="align-self:flex-start">이번 주 모션 챌린지</span>
+          <h2 style="font-size:24px">류하람의 하트 챌린지</h2>
+          <p class="note" style="font-size:14px">대화에서 하람이를 세 번 웃게 하면, 결정적 순간에 XSTAGE 댄스 모션 '하트 챌린지'를 춰요. 그 장면을 릴스로 올리면 챌린지 참여 완료예요.</p>
+          <div class="row"><span class="tag">XSTAGE · 춤</span><span class="tag">보상 스텝 5</span><span class="tag">#무브로그챌린지</span></div>
+          <div class="row"><button class="btn pri" id="chalGo">하람이와 대화하러 가기</button><button class="btn" id="chalPreview">모션 미리보기</button></div>
+        </div>
+        <div class="stage" id="stageCom" style="height:clamp(280px,42vh,400px)">
+          <div class="hud"><span class="chip">모션 미리보기</span></div>
+          <div class="sub" id="subCom"></div><div class="keytitle" id="keyCom"></div>
+        </div>
+      </div>
+    </section>
+    <section class="block"><h2>공유 피드</h2><div class="feed" id="feed"></div></section>
+    <section class="block">
+      <h2>캐릭터 팩 마켓</h2>
+      <p class="lead" style="margin-bottom:10px">창작자가 캐릭터(성격·말투·세계관)와 XSTAGE 모션 조합을 묶어 등록해요. 판매 금액 일부는 플랫폼 수수료, 나머지는 창작자에게 정산돼요. 모션 원본은 내려받을 수 없고 앱 안 사용권만 거래돼요.</p>
+      <div class="grid" id="packs"></div>
+    </section>
+    <section class="block"><h2>굿즈</h2><div class="grid" id="goods"></div></section>
+  </main>
+</div>
+
+<div class="install-banner" id="installBanner" hidden aria-live="polite"></div>
+
+<nav class="tabs" id="tabs" aria-label="화면">
+  <button type="button" data-tab="home" class="on"><span class="tab-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg></span><span class="tab-lbl">홈</span></button>
+  <button type="button" data-tab="chat"><span class="tab-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 9h10M7 13h6"/><path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3l-3 3-3-3H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg></span><span class="tab-lbl">대화</span></button>
+  <button type="button" data-tab="record"><span class="tab-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l3-3 3 2 4-5"/></svg></span><span class="tab-lbl">변화기록</span></button>
+  <button type="button" data-tab="community"><span class="tab-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM17 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/><path d="M3 20c0-3 2.5-5 6-5M15 15c3.5 0 6 2 6 5"/></svg></span><span class="tab-lbl">커뮤니티</span></button>
+</nav>
+
+<div class="overlay" id="ov" hidden>
+  <div class="ovbox">
+    <div class="stage ovstage" id="stageOv">
+      <div class="hud"><span class="chip" id="hudOv"></span></div>
+      <div class="sub" id="subOv"></div><div class="keytitle" id="keyOv"></div>
+    </div>
+    <div class="ovbar"><button class="btn" id="ovReplay">다시 보기</button><button class="btn" id="ovSkip">건너뛰고 대화로</button></div>
+  </div>
+</div>
+<div class="modal" id="modal" hidden><div class="mbox" id="mbox" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast"></div>
+
+<!-- 3D 라이브러리 -->
+
+<!-- 우리 코드 (순서 중요: 위에서부터 차례대로 불러옴) -->
+   <script src="ui.js"></script>
+   <script src="data.js"></script>
+   <script src="state.js"></script>
+   <script src="stage.js"></script>
+   <script src="api.js"></script>
+   <script src="home.js"></script>
+   <script src="chat.js"></script>
+   <script src="record.js"></script>
+   <script src="shop.js"></script>
+   <script src="community.js"></script>
+   <script src="main.js"></script>
+   <script src="pwa.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "appId": "com.movelog.app",
+  "appName": "무브로그",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  },
+  "android": {
+    "backgroundColor": "#07070b"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "backgroundColor": "#07070b",
+      "androidSplashResourceName": "splash"
+    },
+    "StatusBar": {
+      "style": "Dark",
+      "backgroundColor": "#07070b"
+    }
+  }
+}
